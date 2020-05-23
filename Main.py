@@ -1,48 +1,22 @@
 import pygame
 from Board import Board
-from Piece import Piece
 
-pieceSet=[
-    #O piece
-    Piece([
-        [[0, 0], [1, 0], [0, 1], [1, 1]]
-    ]),
-    #I piece
-    Piece([
-        [[0, 0], [0, 1], [0, 2], [0, 3]],
-        [[0, 0], [1, 0], [2, 0], [3, 0]]
-    ]),
-    #Z piece
-    Piece([
-        [[0, 0], [0, 1], [1, 1], [1, 2]],
-        [[0, 1], [1, 1], [1, 0], [2, 0]]
-    ]),
-    #S piece
-    Piece([
-        [[1, 0], [1, 1], [0, 1], [0, 2]],
-        [[0, 0], [1, 0], [1, 1], [2, 1]]
-    ]),
-    #T piece
-    Piece([
-        [[0, 1], [1, 0], [1, 1], [1, 2]],
-        [[0, 0], [1, 0], [2, 0], [1, 1]],
-        [[0, 0], [0, 1], [0, 2], [1, 1]],
-        [[0, 1], [1, 1], [2, 1], [1, 0]]
-    ]),
-    #L piece
-    Piece([
-        [[1, 0], [1, 1], [1, 2], [0, 2]],
-        [[0, 0], [1, 0], [2, 0], [2, 1]],
-        [[1, 0], [0, 0], [0, 1], [0, 2]],
-        [[0, 0], [0, 1], [1, 1], [2, 1]]
-    ]),
-    #J piece
-    Piece([
-        [[0, 0], [1, 0], [1, 1], [1, 2]],
-        [[0, 1], [0, 0], [1, 0], [2, 0]],
-        [[0, 0], [0, 1], [0, 2], [1, 2]],
-        [[0, 1], [1, 1], [2, 1], [2, 0]]
-    ])
-]
+pygame.init()
+
+size=[300, 600]
+screen=pygame.display.set_mode(size)
+
+pygame.display.set_caption("MLTetris")
+
+done=False
+clock=pygame.time.Clock()
 
 board=Board()
+
+while not done:
+    for i in range(0, len(board.tiles)):
+        for j in range(0, len(board.tiles[i])):
+            color=(0, 0, 0)
+            if board.tiles[i][j]: color=(255, 255, 255)
+            pygame.draw.rect(screen, color, [j*30, i*30, 30, 30])
+    pygame.display.flip()
