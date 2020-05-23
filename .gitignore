@@ -1,4 +1,2 @@
-
-*.xml
-*.xml
+venv/
 *.xml
