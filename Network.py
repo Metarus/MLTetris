@@ -37,13 +37,13 @@ def inverseSigmoid(z):
 class NeuralNetwork():
     def __init__(self, layers):
         self.layers = layers
-        self.wb=[]
-        for i in range(0, len(self.layers)-1):
+        self.wb=[[[5.739066191952322, 15.837307215334047, 18.00069334271646, 9.854814407265692, -9.168115707644018]]]
+        """for i in range(0, len(self.layers)-1):
             self.wb.append([])
             for j in range(0, self.layers[i+1]):
                 self.wb[i].append([])
                 for k in range(0, self.layers[i]+1):
-                    self.wb[i][j].append(1)
+                    self.wb[i][j].append(0.000001)"""
         self.best=self.wb
 
     def calc(self, val):
@@ -55,7 +55,7 @@ class NeuralNetwork():
         return answer
 
     def func(self, val):
-        neurons = []
+        neurons=[]
         for i in range(0, len(self.layers)):
             neurons.append([])
             for j in range(0, self.layers[i]):
@@ -68,7 +68,7 @@ class NeuralNetwork():
                 for k in range(0, self.layers[i]):
                     tempVar+=self.wb[i][j][k]*neurons[i][k]
                 tempVar+=self.wb[i][j][len(self.wb)-1]
-                neurons[i+1][j]=sigmoid(tempVar)
+                neurons[i+1][j]=tempVar
         return neurons[len(neurons)-1]
 
     def cost(self, val):
