@@ -18,11 +18,13 @@ clock=pygame.time.Clock()
 
 board=Board()
 
-sampleSize=5
+sampleSize=20
 sampleCycle=0
 
 score=0
 highScore=0
+
+holdPiece=0
 
 genNum=0
 variantNum=0
@@ -73,24 +75,37 @@ while not done:
 
     minScore=999999999 #will set it to the first board regardless
     bestParams=[0, 0]
-    for i in range(0, 10):
-        for j in range(0, len(pieceSet[currentPieceSet[pieceCount]].variants)):
-            tempBoard=copy.deepcopy(board) #should be able to create a clone without any errors, if error copy array
-            if tempBoard.drop(currentPieceSet[pieceCount], i, j):
-                boardScore=net.func(tempBoard.calcScore())[0]
-                if minScore>boardScore:
-                    minScore=boardScore
-                    bestParams=[i, j]
+    for k in range(0, 2):
+        if k==0:
+            piece=currentPieceSet[pieceCount]
+        else:
+            piece=holdPiece
+        for i in range(0, 10):
+            for j in range(0, len(pieceSet[piece].variants)):
+                tempBoard=copy.deepcopy(board) #should be able to create a clone without any errors, if error copy array
+                if tempBoard.drop(piece, i, j):
+                    boardScore=net.func(tempBoard.calcScore())[0]
+                    if minScore>boardScore:
+                        minScore=boardScore
+                        bestParams=[i, j, k]
 
-    board.drop(currentPieceSet[pieceCount], bestParams[0], bestParams[1])
+    board.drop(currentPieceSet[pieceCount] if bestParams[2]==0 else holdPiece, bestParams[0], bestParams[1])
+    if bestParams[2]==1:
+        holdPiece=currentPieceSet[pieceCount]
 
     pieceCount=(pieceCount+1)%7
 
-    """for i in range(0, len(board.tiles)):
-        for j in range(0, len(board.tiles[i])):
-            color=(0, 0, 0)
-            if board.tiles[i][j]: color=(255, 255, 255)
-            pygame.draw.rect(screen, color, [j*30, i*30, 30, 30])
-    clock.tick(3)"""
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_UP:
+            for i in range(0, len(board.tiles)):
+                for j in range(0, len(board.tiles[i])):
+                    color=(0, 0, 0)
+                    if board.tiles[i][j]: color=(255, 255, 255)
+                    pygame.draw.rect(screen, color, [j*30, i*30, 30, 30])
+            clock.tick(15)
 
     pygame.display.flip()

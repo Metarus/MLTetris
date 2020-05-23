@@ -37,7 +37,7 @@ def inverseSigmoid(z):
 class NeuralNetwork():
     def __init__(self, layers):
         self.layers = layers
-        self.wb=[[[5.739066191952322, 15.837307215334047, 18.00069334271646, 9.854814407265692, -9.168115707644018]]]
+        self.wb=[[[2.748184120932902, 19.374810094464504, 24.262936077055294, 4.632522941660126, -37.292407760504894]]]
         """for i in range(0, len(self.layers)-1):
             self.wb.append([])
             for j in range(0, self.layers[i+1]):
