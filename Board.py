@@ -1,6 +1,6 @@
 import copy
-
 import Piece
+import numpy as np
 
 class Board:
     def __init__(self):
@@ -28,5 +28,52 @@ class Board:
 
 
     def calcScore(self):
+        highestTiles=[]
+        for i in range(0, len(self.tiles[0])):
+            found=False
+            height=0
+            while not found:
+                if self.tiles[height][i]:
+                    found=True
+                    highestTiles.append(height)
+                elif height==19:
+                    found=True
+                    highestTiles.append(20)
+                else:
+                    height+=1
 
-        return
+        lowestHole=[]
+        for i in range(0, len(self.tiles[0])):
+            found=False
+            height=19
+            while not found:
+                if not self.tiles[height][i]:
+                    found=True
+                    lowestHole.append(height)
+                elif height==0:
+                    found=True
+                    lowestHole.append(-1)
+                else:
+                    height-=1
+
+        netInputs=[0, 0, 0, 0]
+        for i in range(0, len(highestTiles)-1):
+            netInputs[0]+=np.power(highestTiles[i]-highestTiles[i+1], 2)
+
+        for i in range(0, len(highestTiles)):
+            netInputs[1]+=lowestHole[i]-highestTiles[i]+1
+
+        highest=0
+        for i in range(1, len(highestTiles)):
+            if highestTiles[highest]<highestTiles[i]:
+                highest=i
+        netInputs[2]=highestTiles[highest]
+
+        parityBlocks=[0, 0]
+        for i in range(0, len(self.tiles)):
+            for j in range(0, len(self.tiles[i])):
+                if self.tiles[i][j]:
+                    parityBlocks[(i+j)%2]+=1
+        netInputs[3]=np.abs(parityBlocks[0]-parityBlocks[1])
+
+        return netInputs
