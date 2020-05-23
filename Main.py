@@ -42,6 +42,7 @@ while not done:
             dead=True
 
     if dead:
+        print("dead")
         sampleCycle += 1
         if sampleCycle >= sampleSize:
             if score > highScore:
@@ -99,13 +100,13 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
 
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_UP:
-            for i in range(0, len(board.tiles)):
-                for j in range(0, len(board.tiles[i])):
-                    color=(0, 0, 0)
-                    if board.tiles[i][j]: color=(255, 255, 255)
-                    pygame.draw.rect(screen, color, [j*30, i*30, 30, 30])
-            clock.tick(15)
+    print(board.lines)
+
+    #if event.type == pygame.KEYDOWN:
+        #if event.key == pygame.K_UP:
+    for i in range(0, len(board.tiles)):
+        for j in range(0, len(board.tiles[i])):
+            pygame.draw.rect(screen, board.tileColors[i][j], [j*30, i*30, 30, 30])
+    clock.tick(100)
 
     pygame.display.flip()

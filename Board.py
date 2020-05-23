@@ -4,6 +4,7 @@ import numpy as np
 
 class Board:
     def __init__(self):
+        self.tileColors=[[(0, 0, 0) for i in range(10)] for j in range(20)]
         self.tiles=[[False for i in range(10)] for j in range(20)]
         self.lines=0
 
@@ -25,6 +26,7 @@ class Board:
                     tempTiles[i][0]+=1
         for i in range(0, 4):
             self.tiles[tempTiles[i][0]][tempTiles[i][1]]=True
+            self.tileColors[tempTiles[i][0]][tempTiles[i][1]]=Piece.pieceSet[piece].color
         for i in range(0, len(self.tiles)):
             fullLine=True
             for j in range(0, 10):
@@ -33,10 +35,8 @@ class Board:
                     break
             if fullLine:
                 for j in range(i, 0, -1):
-                    if j==0:
-                        self.tiles[j]=[False for k in range(10)]
-                    else:
-                        self.tiles[j]=self.tiles[j-1]
+                    self.tiles[j]=copy.deepcopy(self.tiles[j-1])
+                    self.tileColors[j]=copy.deepcopy(self.tileColors[j-1])
                 self.lines+=1
         return True
 
